@@ -196,7 +196,7 @@ export default function App() {
 	}
 
 	return (
-		<div className='flex h-dvh flex-col overflow-hidden bg-background text-foreground transition-colors duration-200'>
+		<div className='flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground transition-colors duration-200'>
 			<main className='mx-auto min-h-0 w-full max-w-[560px] flex-1 overflow-y-auto overscroll-contain px-5 pt-10 pb-24 sm:pt-12'>
 				<header className='mb-8 flex items-center justify-between'>
 					<div>
@@ -220,7 +220,6 @@ export default function App() {
 						{theme === 'light' ? <Moon size={19} /> : <Sun size={19} />}
 					</button>
 				</header>
-
 				{items.length === 0 ? (
 					<section className='flex animate-appear flex-col items-center px-5 pt-24 text-center'>
 						<div className='mb-5 grid size-[58px] place-items-center rounded-[20px] bg-accent-soft text-accent'>
@@ -377,7 +376,6 @@ export default function App() {
 					</>
 				)}
 			</main>
-
 			<form
 				onSubmit={addItem}
 				className='fixed inset-x-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-10 mx-auto flex w-[calc(100%-32px)] max-w-[560px] items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
