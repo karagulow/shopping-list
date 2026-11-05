@@ -227,7 +227,7 @@ export default function App() {
 							<Check size={25} />
 						</div>
 
-						<h2 className='text-[17px] font-semibold'>Пока ничего нет</h2>
+						<h2 className='text-[18px] font-semibold'>Пока ничего нет</h2>
 
 						<p className='mt-2 text-sm text-muted'>
 							Добавьте продукты, которые нужно купить
@@ -292,7 +292,7 @@ export default function App() {
 													cancelEditing();
 												}
 											}}
-											className={`min-w-0 flex-1 text-[15px] leading-[1.5] font-normal tracking-normal [overflow-wrap:anywhere] ${
+											className={`min-w-0 flex-1 text-[16px] leading-[1.5] font-normal tracking-normal [overflow-wrap:anywhere] ${
 												isEditing
 													? 'cursor-text'
 													: item.completed
@@ -388,7 +388,7 @@ export default function App() {
 					value={input}
 					onChange={event => setInput(event.target.value)}
 					aria-label='Название покупки'
-					className='min-w-0 flex-1 bg-transparent text-[15px] leading-[1.5] font-normal tracking-normal text-foreground placeholder:text-muted'
+					className='min-w-0 flex-1 bg-transparent text-[16px] leading-[1.5] font-normal tracking-normal text-foreground placeholder:text-muted'
 				/>
 
 				<button
