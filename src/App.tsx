@@ -88,8 +88,10 @@ export default function App() {
 		if (!viewport) return;
 
 		const updateKeyboardInset = () => {
-			const keyboardHeight =
-				window.innerHeight - (viewport.height + viewport.offsetTop);
+			const keyboardHeight = Math.max(
+				0,
+				window.innerHeight - viewport.height - viewport.offsetTop,
+			);
 
 			setKeyboardInset(keyboardHeight > 100 ? keyboardHeight : 0);
 		};
@@ -222,7 +224,7 @@ export default function App() {
 	}
 
 	return (
-		<div className='flex h-dvh flex-col overflow-hidden bg-background text-foreground transition-colors duration-200'>
+		<div className='relative flex h-full flex-col overflow-hidden bg-background text-foreground transition-colors duration-200'>
 			<main className='mx-auto min-h-0 w-full max-w-[560px] flex-1 overflow-y-auto overscroll-contain px-5 pt-10 pb-24 sm:pt-12'>
 				<header className='mb-8 flex items-center justify-between'>
 					<div>
@@ -403,13 +405,12 @@ export default function App() {
 					</>
 				)}
 			</main>
-
 			<form
 				onSubmit={addItem}
 				style={{
 					bottom: `calc(${keyboardInset}px + max(16px, env(safe-area-inset-bottom)))`,
 				}}
-				className='fixed inset-x-4 z-10 mx-auto flex w-[calc(100%-32px)] max-w-[560px] items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
+				className='absolute inset-x-4 z-10 mx-auto flex w-[calc(100%-32px)] max-w-[560px] items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
 			>
 				<input
 					type='text'
