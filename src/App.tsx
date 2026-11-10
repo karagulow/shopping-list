@@ -55,6 +55,7 @@ export default function App() {
 	const [deletingIds, setDeletingIds] = useState<Set<string>>(() => new Set());
 
 	const editableRef = useRef<HTMLSpanElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -101,6 +102,10 @@ export default function App() {
 		]);
 
 		setInput('');
+
+		requestAnimationFrame(() => {
+			inputRef.current?.focus();
+		});
 	}
 
 	function toggleItem(id: string) {
@@ -381,6 +386,7 @@ export default function App() {
 				className='fixed inset-x-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-10 mx-auto flex w-[calc(100%-32px)] max-w-[560px] items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
 			>
 				<input
+					ref={inputRef}
 					type='text'
 					placeholder='Добавить покупку...'
 					value={input}
