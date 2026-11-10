@@ -1,75 +1,52 @@
-# React + TypeScript + Vite
+# 🛒 Список покупок
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Простое мини-приложение для управления списком покупок. Помогает не забыть ничего в магазине и держать все необходимые покупки под рукой.
 
-Currently, two official plugins are available:
+Приложение работает как обычный сайт, но его также можно установить на устройство в качестве **PWA** (Progressive Web App). Поддерживается оффлайн-режим.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Установка приложения (PWA)
 
-## React Compiler
+Приложение можно установить на устройство и пользоваться им отдельно от браузера.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Android
 
-## Expanding the ESLint configuration
+1. Откройте приложение в браузере Google Chrome.
+2. Нажмите на меню с тремя точками в правом верхнем углу.
+3. Выберите **«Установить приложение»** или **«Добавить на главный экран»**.
+4. Подтвердите установку.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+После этого иконка приложения появится на главном экране.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### iOS
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Откройте приложение в браузере Safari.
+2. Нажмите кнопку **«Поделиться»**.
+3. Выберите **«На экран Домой»**.
+4. При необходимости измените название и нажмите **«Добавить»**.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Приложение появится на главном экране и будет открываться в отдельном окне.
 
-```
+## Оффлайн-режим
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Приложение поддерживает работу без интернета благодаря Service Worker и кешированию ресурсов.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+После первого посещения страницы необходимые файлы сохраняются на устройстве. Это позволяет:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Открывать приложение без подключения к интернету.
+- Просматривать и изменять список покупок.
+- Сохранять изменения локально на устройстве.
 
-```
+**Важно:** данные хранятся в `localStorage` браузера. Синхронизации между устройствами и облачного резервного копирования нет. При очистке данных браузера список покупок может быть потерян.
+
+## Стек
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- vite-plugin-pwa
+- Lucide Icons
+
+## Права
+
+Если вам хочется доработать проект под свои нужды — можете свободно склонировать репозиторий к себе и творить всё, что душе угодно.
