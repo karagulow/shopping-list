@@ -62,7 +62,7 @@
 		}
 	}
 
-	@keyframes telegram-delete {
+	@keyframes delete-item {
 		0% {
 			opacity: 1;
 			transform: translateX(0) scale(1);

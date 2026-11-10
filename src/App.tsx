@@ -2,7 +2,7 @@ import {
 	useEffect,
 	useRef,
 	useState,
-	type FormEvent,
+	type SubmitEvent,
 	type AnimationEvent,
 } from 'react';
 import { Check, Moon, Pencil, Plus, Sun, Trash2, X } from 'lucide-react';
@@ -85,7 +85,7 @@ export default function App() {
 	const completedCount = items.filter(item => item.completed).length;
 	const activeCount = items.length - completedCount;
 
-	function addItem(event: FormEvent<HTMLFormElement>) {
+	function addItem(event: SubmitEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		const title = input.trim();
@@ -148,7 +148,7 @@ export default function App() {
 		event: AnimationEvent<HTMLElement>,
 		id: string,
 	) {
-		if (event.animationName !== 'telegram-delete') return;
+		if (event.animationName !== 'delete-item') return;
 
 		setItems(prev => prev.filter(item => item.id !== id));
 
@@ -202,7 +202,7 @@ export default function App() {
 
 	return (
 		<div className='flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground transition-colors duration-200'>
-			<main className='mx-auto min-h-0 w-full max-w-[560px] flex-1 overflow-y-auto overscroll-contain px-5 pt-10 pb-24 sm:pt-12'>
+			<main className='mx-auto min-h-0 w-full max-w-140 flex-1 overflow-y-auto overscroll-contain px-5 pt-10 pb-24 sm:pt-12'>
 				<header className='mb-8 flex items-center justify-between'>
 					<div>
 						<h1 className='text-[27px] font-bold tracking-tight'>Покупки</h1>
@@ -220,14 +220,14 @@ export default function App() {
 						type='button'
 						onClick={toggleTheme}
 						aria-label='Сменить тему'
-						className='grid size-[42px] place-items-center rounded-full border border-border bg-surface text-foreground transition-transform hover:scale-105'
+						className='grid size-10.5 place-items-center rounded-full border border-border bg-surface text-foreground transition-transform hover:scale-105'
 					>
 						{theme === 'light' ? <Moon size={19} /> : <Sun size={19} />}
 					</button>
 				</header>
 				{items.length === 0 ? (
 					<section className='flex animate-appear flex-col items-center px-5 pt-24 text-center'>
-						<div className='mb-5 grid size-[58px] place-items-center rounded-[20px] bg-accent-soft text-accent'>
+						<div className='mb-5 grid size-14.5 place-items-center rounded-[20px] bg-accent-soft text-accent'>
 							<Check size={25} />
 						</div>
 
@@ -250,7 +250,7 @@ export default function App() {
 										onAnimationEnd={event =>
 											handleDeleteAnimationEnd(event, item.id)
 										}
-										className={`flex min-h-[58px] items-center gap-3.5 overflow-hidden border-b border-border ${
+										className={`flex min-h-14.5 items-center gap-3.5 overflow-hidden border-b border-border ${
 											isDeleting
 												? 'animate-delete-item pointer-events-none'
 												: 'animate-appear'
@@ -265,7 +265,7 @@ export default function App() {
 													? 'Отметить как некупленное'
 													: 'Отметить как купленное'
 											}
-											className={`grid size-[23px] shrink-0 place-items-center rounded-full border-[1.5px] transition-all hover:scale-105 ${
+											className={`grid size-6 shrink-0 place-items-center rounded-full border-[1.5px] transition-all hover:scale-105 ${
 												item.completed
 													? 'border-accent bg-accent text-white'
 													: 'border-[#c9cdd4] text-white hover:border-accent'
@@ -296,7 +296,7 @@ export default function App() {
 													cancelEditing();
 												}
 											}}
-											className={`min-w-0 flex-1 text-[16px] leading-[1.5] font-normal tracking-normal [overflow-wrap:anywhere] ${
+											className={`min-w-0 flex-1 text-[16px] leading-6 font-normal tracking-normal wrap-anywhere ${
 												isEditing
 													? 'cursor-text'
 													: item.completed
@@ -314,7 +314,7 @@ export default function App() {
 														type='button'
 														onClick={() => saveEditing(item.id)}
 														aria-label='Сохранить'
-														className='grid size-[34px] place-items-center rounded-xl text-accent transition-colors hover:bg-accent-soft'
+														className='grid size-8.5 place-items-center rounded-xl text-accent transition-colors hover:bg-accent-soft'
 													>
 														<Check size={17} />
 													</button>
@@ -323,7 +323,7 @@ export default function App() {
 														type='button'
 														onClick={cancelEditing}
 														aria-label='Отменить'
-														className='grid size-[34px] place-items-center rounded-xl text-muted transition-colors hover:bg-accent-soft hover:text-accent'
+														className='grid size-8.5 place-items-center rounded-xl text-muted transition-colors hover:bg-accent-soft hover:text-accent'
 													>
 														<X size={17} />
 													</button>
@@ -335,7 +335,7 @@ export default function App() {
 														onClick={() => startEditing(item)}
 														disabled={isDeleting}
 														aria-label='Редактировать'
-														className='grid size-[34px] place-items-center rounded-xl text-muted transition-colors hover:bg-accent-soft hover:text-accent'
+														className='grid size-8.5 place-items-center rounded-xl text-muted transition-colors hover:bg-accent-soft hover:text-accent'
 													>
 														<Pencil size={16} />
 													</button>
@@ -345,7 +345,7 @@ export default function App() {
 														onClick={() => deleteItem(item.id)}
 														disabled={isDeleting}
 														aria-label='Удалить'
-														className='grid size-[34px] place-items-center rounded-xl text-muted transition-colors hover:bg-red-500/10 hover:text-danger'
+														className='grid size-8.5 place-items-center rounded-xl text-muted transition-colors hover:bg-red-500/10 hover:text-danger'
 													>
 														<Trash2 size={17} />
 													</button>
@@ -383,7 +383,7 @@ export default function App() {
 			</main>
 			<form
 				onSubmit={addItem}
-				className='fixed inset-x-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-10 mx-auto flex w-[calc(100%-32px)] max-w-[560px] items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
+				className='fixed inset-x-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-10 mx-auto flex w-[calc(100%-32px)] max-w-140 items-center gap-2.5 rounded-[18px] border border-black/5 bg-dock p-2 pl-4 shadow-dock backdrop-blur-2xl dark:border-white/[0.07]'
 			>
 				<input
 					ref={inputRef}
@@ -392,14 +392,14 @@ export default function App() {
 					value={input}
 					onChange={event => setInput(event.target.value)}
 					aria-label='Название покупки'
-					className='min-w-0 flex-1 bg-transparent text-[16px] leading-[1.5] font-normal tracking-normal text-foreground placeholder:text-muted'
+					className='min-w-0 flex-1 bg-transparent text-[16px] leading-6 font-normal tracking-normal text-foreground placeholder:text-muted'
 				/>
 
 				<button
 					type='submit'
 					disabled={!input.trim()}
 					aria-label='Добавить покупку'
-					className='grid size-9 shrink-0 place-items-center rounded-[12px] bg-accent text-white transition-all hover:bg-accent-hover active:scale-95 disabled:cursor-default disabled:opacity-45'
+					className='grid size-9 shrink-0 place-items-center rounded-xl bg-accent text-white transition-all hover:bg-accent-hover active:scale-95 disabled:cursor-default disabled:opacity-45'
 				>
 					<Plus size={16} strokeWidth={3} />
 				</button>
