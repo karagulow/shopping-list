@@ -14,14 +14,16 @@ export default defineConfig({
 		VitePWA({
 			registerType: 'autoUpdate',
 
-			includeAssets: ['favicon.ico'],
+			includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
 
 			manifest: {
 				name: 'Список покупок',
 				short_name: 'Покупки',
 				description: 'Простой список покупок',
+
 				theme_color: '#111214',
 				background_color: '#111214',
+
 				display: 'standalone',
 				orientation: 'portrait',
 
@@ -30,14 +32,26 @@ export default defineConfig({
 
 				icons: [
 					{
-						src: `${base}pwa-192x192.png`,
+						src: 'icon-192x192.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: `${base}pwa-512x512.png`,
+						src: 'icon-512x512.png',
 						sizes: '512x512',
 						type: 'image/png',
+					},
+					{
+						src: 'icon-192x192-maskable.png',
+						sizes: '192x192',
+						type: 'image/png',
+						purpose: 'maskable',
+					},
+					{
+						src: 'icon-512x512-maskable.png',
+						sizes: '512x512',
+						type: 'image/png',
+						purpose: 'maskable',
 					},
 				],
 			},
