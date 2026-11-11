@@ -265,7 +265,7 @@ export default function App() {
 													? 'Отметить как некупленное'
 													: 'Отметить как купленное'
 											}
-											className={`grid size-6 shrink-0 place-items-center rounded-full border-[1.5px] transition-all hover:scale-105 ${
+											className={`grid size-6 shrink-0 place-items-center rounded-full border-[1.5px] transition-all ${
 												item.completed
 													? 'border-accent bg-accent text-white'
 													: 'border-[#c9cdd4] text-white hover:border-accent'

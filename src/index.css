@@ -47,8 +47,7 @@
 	--shadow-dock: var(--shadow);
 
 	--animate-appear: appear 0.22s ease both;
-	--animate-delete-item: telegram-delete 280ms cubic-bezier(0.4, 0, 0.2, 1)
-		forwards;
+	--animate-delete-item: delete-item 280ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
 	@keyframes appear {
 		from {
