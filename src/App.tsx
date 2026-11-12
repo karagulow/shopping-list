@@ -102,10 +102,6 @@ export default function App() {
 		]);
 
 		setInput('');
-
-		requestAnimationFrame(() => {
-			inputRef.current?.focus();
-		});
 	}
 
 	function toggleItem(id: string) {
@@ -397,6 +393,7 @@ export default function App() {
 
 				<button
 					type='submit'
+					onPointerDown={event => event.preventDefault()}
 					disabled={!input.trim()}
 					aria-label='Добавить покупку'
 					className='grid size-9 shrink-0 place-items-center rounded-xl bg-accent text-white transition-all hover:bg-accent-hover active:scale-95 disabled:cursor-default disabled:opacity-45'
