@@ -1,11 +1,10 @@
-import React, { type AnimationEvent, type RefObject } from 'react';
+import React, { type RefObject } from 'react';
 import { Check, Pencil, Trash2, X } from 'lucide-react';
 
 import type { ShoppingItem as ShoppingItemType } from '../types/shopping-item';
 
 interface ShoppingItemProps {
 	item: ShoppingItemType;
-	isDeleting: boolean;
 	isEditing: boolean;
 	isNewItem: boolean;
 	editableRef: RefObject<HTMLSpanElement | null>;
@@ -15,12 +14,10 @@ interface ShoppingItemProps {
 	onSaveEditing: (id: string, addNext?: boolean) => void;
 	onCancelEditing: () => void;
 	onEditingTitleChange: (title: string) => void;
-	onAnimationEnd: (event: AnimationEvent<HTMLElement>, id: string) => void;
 }
 
 export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 	item,
-	isDeleting,
 	isEditing,
 	isNewItem,
 	editableRef,
@@ -30,22 +27,13 @@ export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 	onSaveEditing,
 	onCancelEditing,
 	onEditingTitleChange,
-	onAnimationEnd,
 }) => {
 	return (
-		<article
-			key={item.id}
-			onAnimationEnd={event => onAnimationEnd(event, item.id)}
-			className={`flex min-h-14.5 items-center gap-3.5 overflow-hidden border-b border-border ${
-				isDeleting
-					? 'animate-delete-item pointer-events-none'
-					: 'animate-appear'
-			}`}
-		>
+		<article className='flex min-h-14.5 items-center gap-3.5 overflow-hidden border-b border-border'>
 			<button
 				type='button'
 				onClick={() => onToggle(item.id)}
-				disabled={isDeleting || isEditing}
+				disabled={isEditing}
 				aria-label={
 					item.completed ? 'Отметить как некупленное' : 'Отметить как купленное'
 				}
@@ -121,7 +109,6 @@ export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 						<button
 							type='button'
 							onClick={() => onStartEditing(item)}
-							disabled={isDeleting}
 							aria-label='Редактировать'
 							className='grid size-8.5 place-items-center rounded-xl text-muted transition-colors hover:bg-accent-soft hover:text-accent'
 						>
@@ -131,7 +118,6 @@ export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 						<button
 							type='button'
 							onClick={() => onDelete(item.id)}
-							disabled={isDeleting}
 							aria-label='Удалить'
 							className='grid size-8.5 place-items-center rounded-xl text-muted transition-colors hover:bg-red-500/10 hover:text-danger'
 						>

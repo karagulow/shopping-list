@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type AnimationEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { ShoppingItem } from '../types/shopping-item';
 
@@ -17,7 +17,6 @@ export function useShoppingItems() {
 	const [items, setItems] = useState<ShoppingItem[]>(getInitialItems);
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editingTitle, setEditingTitle] = useState('');
-	const [deletingIds, setDeletingIds] = useState<Set<string>>(() => new Set());
 
 	const editableRef = useRef<HTMLSpanElement>(null);
 	const newItemIdRef = useRef<string | null>(null);
@@ -73,8 +72,6 @@ export function useShoppingItems() {
 	}
 
 	function toggleItem(id: string) {
-		if (deletingIds.has(id)) return;
-
 		setItems(prev =>
 			prev.map(item =>
 				item.id === id ? { ...item, completed: !item.completed } : item,
@@ -83,48 +80,15 @@ export function useShoppingItems() {
 	}
 
 	function deleteItem(id: string) {
-		if (deletingIds.has(id)) return;
-
-		setDeletingIds(prev => new Set(prev).add(id));
+		setItems(prev => prev.filter(item => item.id !== id));
 	}
 
 	function deleteCompleted() {
-		const idsToDelete = items
-			.filter(item => item.completed && !deletingIds.has(item.id))
-			.map(item => item.id);
-
-		if (idsToDelete.length === 0) return;
-
-		setDeletingIds(prev => new Set([...prev, ...idsToDelete]));
+		setItems(prev => prev.filter(item => !item.completed));
 	}
 
 	function deleteAll() {
-		const idsToDelete = items
-			.filter(item => !deletingIds.has(item.id))
-			.map(item => item.id);
-
-		if (idsToDelete.length === 0) return;
-
-		setDeletingIds(prev => new Set([...prev, ...idsToDelete]));
-	}
-
-	function handleDeleteAnimationEnd(
-		event: AnimationEvent<HTMLElement>,
-		id: string,
-	) {
-		if (event.animationName !== 'delete-item') return;
-
-		setItems(prev => prev.filter(item => item.id !== id));
-
-		setDeletingIds(prev => {
-			const next = new Set(prev);
-			next.delete(id);
-			return next;
-		});
-
-		if (editingId === id) {
-			cancelEditing();
-		}
+		setItems([]);
 	}
 
 	function startEditing(item: ShoppingItem) {
@@ -184,7 +148,6 @@ export function useShoppingItems() {
 		newItemId: newItemIdRef.current,
 		editingId,
 		editingTitle,
-		deletingIds,
 		editableRef,
 		completedCount,
 		activeCount,
@@ -193,7 +156,6 @@ export function useShoppingItems() {
 		deleteItem,
 		deleteCompleted,
 		deleteAll,
-		handleDeleteAnimationEnd,
 		startEditing,
 		cancelEditing,
 		saveEditing,

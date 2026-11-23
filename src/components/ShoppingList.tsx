@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Plus } from 'lucide-react';
 
 import { ShoppingItem } from './ShoppingItem';
@@ -10,7 +11,6 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
 	items,
 	newItemId,
 	editingId,
-	deletingIds,
 	editableRef,
 	toggleItem,
 	deleteItem,
@@ -18,16 +18,19 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
 	saveEditing,
 	cancelEditing,
 	setEditingTitle,
-	handleDeleteAnimationEnd,
 	addItem,
 }) => {
+	const [parent] = useAutoAnimate({
+		duration: 150,
+		easing: 'ease-in-out',
+	});
+
 	return (
-		<section className='flex flex-col'>
+		<section ref={parent} className='flex flex-col'>
 			{items.map(item => (
 				<ShoppingItem
 					key={item.id}
 					item={item}
-					isDeleting={deletingIds.has(item.id)}
 					isEditing={editingId === item.id}
 					isNewItem={item.id === newItemId}
 					editableRef={editableRef}
@@ -37,14 +40,13 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
 					onSaveEditing={saveEditing}
 					onCancelEditing={cancelEditing}
 					onEditingTitleChange={setEditingTitle}
-					onAnimationEnd={handleDeleteAnimationEnd}
 				/>
 			))}
 
 			<button
 				type='button'
 				onClick={addItem}
-				className='flex min-h-14.5 w-full items-center gap-3.5 border-b border-border text-muted transition-colors hover:text-accent'
+				className='flex min-h-14.5 w-full items-center gap-3.5 border-b border-border text-muted hover:text-accent'
 			>
 				<span className='grid size-6 shrink-0 place-items-center'>
 					<Plus size={19} strokeWidth={1.8} />
