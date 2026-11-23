@@ -46,6 +46,7 @@
 - Tailwind CSS
 - vite-plugin-pwa
 - Lucide Icons
+- AutoAnimate
 
 ## Лицензия
 
