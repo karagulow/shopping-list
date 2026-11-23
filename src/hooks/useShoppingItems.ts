@@ -20,9 +20,12 @@ export function useShoppingItems() {
 	const [deletingIds, setDeletingIds] = useState<Set<string>>(() => new Set());
 
 	const editableRef = useRef<HTMLSpanElement>(null);
+	const newItemIdRef = useRef<string | null>(null);
 
 	useEffect(() => {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+		const itemsToSave = items.filter(item => item.id !== newItemIdRef.current);
+
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(itemsToSave));
 	}, [items]);
 
 	useEffect(() => {
@@ -44,19 +47,29 @@ export function useShoppingItems() {
 	const completedCount = items.filter(item => item.completed).length;
 	const activeCount = items.length - completedCount;
 
-	function addItem(title: string) {
-		const trimmedTitle = title.trim();
+	function addItem() {
+		if (editingId) {
+			if (newItemIdRef.current === editingId && !editingTitle.trim()) {
+				cancelEditing();
+			} else {
+				saveEditing(editingId);
+			}
+		}
 
-		if (!trimmedTitle) return;
+		const id = crypto.randomUUID();
 
 		setItems(prev => [
 			...prev,
 			{
-				id: crypto.randomUUID(),
-				title: trimmedTitle,
+				id,
+				title: '',
 				completed: false,
 			},
 		]);
+
+		newItemIdRef.current = id;
+		setEditingId(id);
+		setEditingTitle('');
 	}
 
 	function toggleItem(id: string) {
@@ -115,12 +128,25 @@ export function useShoppingItems() {
 	}
 
 	function startEditing(item: ShoppingItem) {
+		if (editingId && editingId !== item.id) {
+			if (newItemIdRef.current === editingId && !editingTitle.trim()) {
+				cancelEditing();
+			} else {
+				saveEditing(editingId);
+			}
+		}
+
 		setEditingId(item.id);
 		setEditingTitle(item.title);
 	}
 
 	function cancelEditing() {
-		if (editingId) {
+		if (!editingId) return;
+
+		if (newItemIdRef.current === editingId) {
+			setItems(prev => prev.filter(item => item.id !== editingId));
+			newItemIdRef.current = null;
+		} else {
 			const item = items.find(item => item.id === editingId);
 
 			if (editableRef.current && item) {
@@ -132,7 +158,7 @@ export function useShoppingItems() {
 		setEditingTitle('');
 	}
 
-	function saveEditing(id: string) {
+	function saveEditing(id: string, addNext = false) {
 		const title = editingTitle.trim();
 
 		if (!title) {
@@ -144,11 +170,18 @@ export function useShoppingItems() {
 			prev.map(item => (item.id === id ? { ...item, title } : item)),
 		);
 
-		cancelEditing();
+		newItemIdRef.current = null;
+		setEditingId(null);
+		setEditingTitle('');
+
+		if (addNext) {
+			addItem();
+		}
 	}
 
 	return {
 		items,
+		newItemId: newItemIdRef.current,
 		editingId,
 		editingTitle,
 		deletingIds,

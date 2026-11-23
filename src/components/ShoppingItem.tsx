@@ -7,11 +7,12 @@ interface ShoppingItemProps {
 	item: ShoppingItemType;
 	isDeleting: boolean;
 	isEditing: boolean;
+	isNewItem: boolean;
 	editableRef: RefObject<HTMLSpanElement | null>;
 	onToggle: (id: string) => void;
 	onDelete: (id: string) => void;
 	onStartEditing: (item: ShoppingItemType) => void;
-	onSaveEditing: (id: string) => void;
+	onSaveEditing: (id: string, addNext?: boolean) => void;
 	onCancelEditing: () => void;
 	onEditingTitleChange: (title: string) => void;
 	onAnimationEnd: (event: AnimationEvent<HTMLElement>, id: string) => void;
@@ -21,6 +22,7 @@ export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 	item,
 	isDeleting,
 	isEditing,
+	isNewItem,
 	editableRef,
 	onToggle,
 	onDelete,
@@ -70,12 +72,16 @@ export const ShoppingItem: React.FC<ShoppingItemProps> = ({
 
 					if (event.key === 'Enter') {
 						event.preventDefault();
-						onSaveEditing(item.id);
+						onSaveEditing(item.id, isNewItem);
 					}
 
 					if (event.key === 'Escape') {
 						event.preventDefault();
 						onCancelEditing();
+					}
+
+					if (event.key === 'Tab') {
+						onSaveEditing(item.id);
 					}
 				}}
 				className={`min-w-0 flex-1 text-[16px] leading-6 font-normal tracking-normal wrap-anywhere ${
